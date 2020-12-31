@@ -3,6 +3,7 @@
   import debounce from "lodash.debounce";
   import Line from "svelte-chartjs/src/Line.svelte";
   import DataSelector from "./DataSelector.svelte";
+  import Loading from "./Loading.svelte";
   import {
     getColor,
     refreshIds,
@@ -21,6 +22,7 @@
   let chartContainer,
     defs,
     chartHeight,
+    loading,
     generalData = {},
     chartDefs = tagLast(refreshIds(DEFAULT_VIEWS));
 
@@ -35,6 +37,7 @@
         data.method === "avg"
           ? [...getRange(data.start, data.end)]
           : [data.year];
+      loading = true;
       loadMissingData({
         toUpdate,
         chartDefs,
@@ -44,6 +47,7 @@
         chartDefs = tagLast(
           chartDefs.map(item => (item.id === id ? data : item))
         );
+        loading = false;
       });
     },
     remove: data => {
@@ -69,8 +73,12 @@
   };
 
   onMount(async () => {
+    loading = true;
     defs = (await loadSettings()).defs;
+    await tick();
+    updateChartSize();
     generalData = await loadMissingData({ chartDefs, generalData });
+    loading = false;
     await tick();
     updateChartSize();
   });
@@ -86,7 +94,7 @@
 </style>
 
 <div>
-  {#if defs && Object.values(generalData).length}
+  {#if defs}
     <DataSelector {defs} bind:chartDefs {handlers} />
     <div
       class="chart-container"
@@ -94,10 +102,13 @@
       style={`height: ${chartHeight}px;`}>
       <Line
         options={{ maintainAspectRatio: false, animation: { duration: 0 } }}
-        data={{ labels: TIMELINE_LABELS, datasets: chartDefs
-            .filter(Boolean)
-            .map(item => getData({ ...item, generalData })) }} />
+        data={Object.values(generalData).length ? { labels: TIMELINE_LABELS, datasets: chartDefs
+                .filter(Boolean)
+                .map(item => getData({ ...item, generalData })) } : {}} />
 
     </div>
+  {/if}
+  {#if loading}
+    <Loading />
   {/if}
 </div>

@@ -34,9 +34,11 @@
     grid-column-gap: 0.5rem;
     grid-row-gap: 0.5rem;
     padding-bottom: 1rem;
+    outline: none;
   }
   .item {
     display: flex;
+    outline: none;
   }
   .add-button {
     display: flex;
