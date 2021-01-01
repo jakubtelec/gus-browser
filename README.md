@@ -2,7 +2,7 @@
 
 ## What?
 
-Simple Poland's mortality rates data browser - numbers provided by GUS via custom made (node.js + Express + Heroku) API.
+Simple Poland's mortality rates data browser - numbers provided by GUS via custom made API (node.js + Express + Heroku).
 
 ## Stack
 

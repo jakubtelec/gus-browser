@@ -2,7 +2,7 @@
   import { dndzone } from "svelte-dnd-action";
   import DataSelectorItem from "./DataSelectorItem.svelte";
   import { flip } from "svelte/animate";
-  import { tagLast } from "./lib/helpers.js";
+  import { tagLast } from "../lib/helpers.js";
 
   export let defs, chartDefs, handlers;
 

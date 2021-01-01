@@ -1,6 +1,6 @@
 <script>
   export let color, pickColorHandler, outsideClickHandler;
-  import { colors } from "./lib/helpers.js";
+  import { colors } from "../lib/helpers.js";
 </script>
 
 <style>

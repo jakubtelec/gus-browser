@@ -1,4 +1,4 @@
-import { getRange } from "./helpers";
+import { getPeriodRange } from "./helpers";
 
 const apiEndpoint = "API_ENDPOINT";
 
@@ -8,8 +8,10 @@ export const loadMissingData = async ({
   generalData,
 }) => {
   const yearsInDefs = chartDefs.reduce(
-    (acc, { method, year, start, end }) =>
-      method === "avg" ? [...acc, ...getRange(start, end)] : [...acc, year],
+    (acc, { periodMethod, year, yearStart, yearEnd }) =>
+      periodMethod === "avg"
+        ? [...acc, ...getPeriodRange(yearStart, yearEnd)]
+        : [...acc, year],
     []
   );
 

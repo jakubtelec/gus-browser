@@ -31,14 +31,6 @@ export const refreshIds = (arr) =>
   tagLast = (defs) =>
     defs.map((def, i) => ({ ...def, last: i === defs.length - 1 }));
 
-export const getRange = (start, end) => {
-  const min = Math.min(parseInt(start), parseInt(end)),
-    max = Math.max(parseInt(start), parseInt(end));
-  return Array.from({ length: max - min + 1 }, (_, idx) =>
-    (min + idx).toString()
-  );
-};
-
 export const getChartSize = (chartContainer) => {
   const windowHeight = window.innerHeight,
     newChartHeight = windowHeight - chartContainer.offsetTop;
@@ -46,4 +38,30 @@ export const getChartSize = (chartContainer) => {
   return newChartHeight < windowHeight / 2
     ? newChartHeight * 2
     : newChartHeight;
+};
+
+export const getPeriodRange = (start, end) => {
+  const min = Math.min(parseInt(start), parseInt(end)),
+    max = Math.max(parseInt(start), parseInt(end));
+  return Array.from({ length: max - min + 1 }, (_, idx) =>
+    (min + idx).toString()
+  );
+};
+
+export const getAgeRange = (start, end, table) =>
+  table.slice(0, table.indexOf(end) + 1).slice(table.indexOf(start));
+
+export const sumArrs = (arrs) => {
+  const length = arrs.reduce(
+    (acc, next) => (next.length > acc ? next.length : acc),
+    0
+  );
+  const sum = [];
+  for (let x = 0; x < length; x++) {
+    sum[x] = 0;
+    for (let y = 0; y < arrs.length; y++) {
+      if (arrs[y][x]) sum[x] += arrs[y][x];
+    }
+  }
+  return sum;
 };

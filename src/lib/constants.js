@@ -1,53 +1,84 @@
 import { getColor } from "./helpers.js";
 
-const DEF_GROUP = "Ogółem";
+const ageGroup = "Ogółem";
+const yearStart = "2015",
+  yearEnd = "2020";
+const ageGroupStart = "0 - 4",
+  ageGroupEnd = "90 i więcej";
 
 export const DEFAULT_VIEWS = [
   {
-    method: "single",
+    periodMethod: "single",
+    ageGroupMethod: "single",
     region: "Polska",
     year: "2020",
-    start: "2015",
-    end: "2020",
+    yearStart,
+    yearEnd,
     color: getColor(),
-    ageGroup: DEF_GROUP,
+    ageGroup,
+    ageGroupStart,
+    ageGroupEnd,
   },
   {
-    method: "single",
+    periodMethod: "single",
+    ageGroupMethod: "sum",
     region: "Polska",
-    year: "2015",
-    start: "2015",
-    end: "2020",
+    year: "2020",
+    yearStart,
+    yearEnd,
     color: getColor(),
-    ageGroup: DEF_GROUP,
+    ageGroup,
+    ageGroupStart,
+    ageGroupEnd: "60 - 64",
   },
   {
-    method: "single",
+    periodMethod: "single",
+    ageGroupMethod: "sum",
     region: "Polska",
-    year: "2010",
-    start: "2015",
-    end: "2020",
+    year: "2020",
+    yearStart,
+    yearEnd,
     color: getColor(),
-    ageGroup: DEF_GROUP,
+    ageGroup,
+    ageGroupStart: "65 - 69",
+    ageGroupEnd,
   },
-  {
-    method: "single",
-    region: "Polska",
-    year: "2005",
-    start: "2015",
-    end: "2020",
-    color: getColor(),
-    ageGroup: DEF_GROUP,
-  },
-  {
-    method: "avg",
-    region: "Polska",
-    year: "2000",
-    start: "2015",
-    end: "2019",
-    color: getColor(),
-    ageGroup: DEF_GROUP,
-  },
+  // {
+  //   periodMethod: "single",
+  //   ageGroupMethod: "single",
+  //   region: "Polska",
+  //   year: "2010",
+  //   yearStart,
+  //   yearEnd,
+  //   color: getColor(),
+  //   ageGroup,
+  //   ageGroupStart,
+  //   ageGroupEnd,
+  // },
+  // {
+  //   periodMethod: "single",
+  //   ageGroupMethod: "single",
+  //   region: "Polska",
+  //   year: "2005",
+  //   yearStart,
+  //   yearEnd,
+  //   color: getColor(),
+  //   ageGroup,
+  //   ageGroupStart,
+  //   ageGroupEnd,
+  // },
+  // {
+  //   periodMethod: "avg",
+  //   ageGroupMethod: "single",
+  //   region: "Polska",
+  //   year: "2000",
+  //   yearStart: "2015",
+  //   yearEnd: "2019",
+  //   color: getColor(),
+  //   ageGroup,
+  //   ageGroupStart,
+  //   ageGroupEnd,
+  // },
 ];
 
 export const GROUPS = {
@@ -58,12 +89,15 @@ export const GROUPS = {
 };
 
 export const DEFAULT_ITEM = {
-  method: "single",
+  periodMethod: "single",
+  ageGroupMethod: "single",
   region: "Polska",
   year: "2020",
-  start: "2015",
-  end: "2020",
-  ageGroup: DEF_GROUP,
+  yearStart,
+  yearEnd,
+  ageGroup,
+  ageGroupStart,
+  ageGroupEnd,
 };
 
 export const TIMELINE_LABELS = Array.from({

@@ -2,12 +2,12 @@
   import { onMount, tick } from "svelte";
   import debounce from "lodash.debounce";
   import Line from "svelte-chartjs/src/Line.svelte";
-  import DataSelector from "./DataSelector.svelte";
-  import Loading from "./Loading.svelte";
+  import DataSelector from "./components/DataSelector.svelte";
+  import Loading from "./components/Loading.svelte";
   import {
     getColor,
     refreshIds,
-    getRange,
+    getPeriodRange,
     getChartSize,
     tagLast
   } from "./lib/helpers.js";
@@ -34,8 +34,8 @@
   const handlers = {
     modify: (id, data) => {
       const toUpdate =
-        data.method === "avg"
-          ? [...getRange(data.start, data.end)]
+        data.periodMethod === "avg"
+          ? [...getPeriodRange(data.yearStart, data.yearEnd)]
           : [data.year];
       loading = true;
       loadMissingData({
@@ -81,6 +81,7 @@
     loading = false;
     await tick();
     updateChartSize();
+    console.log(defs);
   });
 
   window.addEventListener("resize", updateChartSize_deb);
@@ -104,7 +105,7 @@
         options={{ maintainAspectRatio: false, animation: { duration: 0 } }}
         data={Object.values(generalData).length ? { labels: TIMELINE_LABELS, datasets: chartDefs
                 .filter(Boolean)
-                .map(item => getData({ ...item, generalData })) } : {}} />
+                .map(item => getData({ ...item, generalData }, defs)) } : {}} />
 
     </div>
   {/if}

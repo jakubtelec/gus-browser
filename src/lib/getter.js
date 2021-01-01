@@ -1,17 +1,57 @@
-import { getRange } from "./helpers.js";
+import { getPeriodRange, getAgeRange, sumArrs } from "./helpers.js";
 
-const gettersByMethod = (generalData) => ({
-  single: ({ region, year, ageGroup, color }) => ({
+const ageGroupByMethod = {
+  single: ({ data, ageGroup }) => data[ageGroup].byWeek,
+  sum: ({ data, ageGroupStart, ageGroupEnd }, { ageGroups }) =>
+    sumArrs(
+      getAgeRange(ageGroupStart, ageGroupEnd, ageGroups).map(
+        (ageGroup) => data[ageGroup].byWeek
+      )
+    ),
+};
+
+const gettersByMethod = (generalData, defs) => ({
+  single: ({
+    region,
+    year,
+    ageGroup,
+    color,
+    ageGroupMethod,
+    ageGroupStart,
+    ageGroupEnd,
+  }) => ({
     label: year,
-    data: generalData[year][region][ageGroup].byWeek,
+    data: ageGroupByMethod[ageGroupMethod](
+      {
+        data: generalData[year][region],
+        ageGroup,
+        ageGroupStart,
+        ageGroupEnd,
+      },
+      defs
+    ),
     borderColor: color,
     backgroundColor: ["white"],
   }),
-  avg: ({ start, end, region, ageGroup, color }) => {
-    const range = getRange(start, end),
+  avg: ({
+    yearStart,
+    yearEnd,
+    region,
+    ageGroup,
+    color,
+    ageGroupMethod,
+    ageGroupStart,
+    ageGroupEnd,
+  }) => {
+    const range = getPeriodRange(yearStart, yearEnd),
       yearsData = Object.entries(generalData)
         .filter(([yr]) => range.includes(yr))
-        .map(([_, byRegion]) => byRegion[region][ageGroup].byWeek);
+        .map(([_, byRegion]) =>
+          ageGroupByMethod[ageGroupMethod](
+            { data: byRegion[region], ageGroup, ageGroupStart, ageGroupEnd },
+            defs
+          )
+        );
 
     const length = yearsData.reduce(
       (acc, next) => (next.length > acc ? next.length : acc),
@@ -28,7 +68,7 @@ const gettersByMethod = (generalData) => ({
       data.push(sum / yearsData.length);
     }
     return {
-      label: `${start} - ${end}`,
+      label: `${yearStart} - ${yearEnd}`,
       data,
       borderColor: color,
       borderDash: [1, 0, 1],
@@ -37,23 +77,32 @@ const gettersByMethod = (generalData) => ({
   },
 });
 
-const getData = ({
-  region,
-  method = "single",
-  year,
-  start,
-  end,
-  color,
-  generalData,
-  ageGroup,
-}) => {
-  return gettersByMethod(generalData)[method]({
+const getData = (
+  {
+    region,
+    periodMethod = "single",
+    year,
+    yearStart,
+    yearEnd,
+    color,
+    generalData,
+    ageGroup,
+    ageGroupMethod,
+    ageGroupStart,
+    ageGroupEnd,
+  },
+  defs
+) => {
+  return gettersByMethod(generalData, defs)[periodMethod]({
     region,
     year,
-    start,
-    end,
+    yearStart,
+    yearEnd,
     color,
     ageGroup,
+    ageGroupMethod,
+    ageGroupStart,
+    ageGroupEnd,
   });
 };
 
