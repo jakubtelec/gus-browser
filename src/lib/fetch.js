@@ -23,6 +23,7 @@ export const loadMissingData = async ({
 
   // no updates needed
   if (!years.length) return generalData;
+  //
   console.log(`Updating: ${years.length}`);
   //
   const response = await (
@@ -30,11 +31,14 @@ export const loadMissingData = async ({
       apiEndpoint +
         "data?" +
         new URLSearchParams({
-          years,
+          paths: JSON.stringify(years.map((year) => `general.${year}`)),
         })
     )
   ).json();
-  return { ...generalData, ...response };
+
+  console.log(response);
+
+  return { ...generalData, ...response.general };
 };
 
 export const loadSettings = async () =>

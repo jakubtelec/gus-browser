@@ -92,6 +92,7 @@
     width: 100%;
     padding: 0.25rem 0.75rem 0.25rem 0.75rem;
     display: flex;
+    column-gap: 1rem;
     justify-content: space-between;
     align-items: center;
     border: 1px solid lightgrey;

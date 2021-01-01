@@ -27,13 +27,13 @@
 
 <style>
   .container {
+    font-size: 14px;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
-    grid-auto-rows: 1fr;
+    grid-template-columns: repeat(auto-fill, 1fr);
+    grid-auto-rows: 0.5fr;
     grid-column-gap: 0.5rem;
     grid-row-gap: 0.5rem;
-    padding-bottom: 1rem;
     outline: none;
   }
   .item {
@@ -46,6 +46,12 @@
     cursor: pointer;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
+  }
+
+  @media all and (max-width: 1200px) {
+    .container {
+      font-size: 12px;
+    }
   }
 </style>
 

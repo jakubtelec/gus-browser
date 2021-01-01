@@ -46,7 +46,7 @@ export default {
   plugins: [
     replace({
       API_ENDPOINT: production
-        ? "https://gus-data.herokuapp.com/"
+        ? "https://gus-mortality-api.herokuapp.com/"
         : "http://localhost:4004/",
     }),
     svelte({

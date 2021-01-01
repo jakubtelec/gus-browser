@@ -83,33 +83,47 @@
     updateChartSize();
     console.log(defs);
   });
-
   window.addEventListener("resize", updateChartSize_deb);
 </script>
 
 <style>
+  .viewport {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    width: 100vw;
+    /* height: 100vh; */
+  }
+  .content-container {
+    position: relative;
+    margin: 0;
+    padding: 8px 0;
+  }
   .chart-container {
     position: relative;
     width: 100%;
+    margin-top: 0.5rem;
   }
 </style>
 
-<div>
-  {#if defs}
-    <DataSelector {defs} bind:chartDefs {handlers} />
-    <div
-      class="chart-container"
-      bind:this={chartContainer}
-      style={`height: ${chartHeight}px;`}>
-      <Line
-        options={{ maintainAspectRatio: false, animation: { duration: 0 } }}
-        data={Object.values(generalData).length ? { labels: TIMELINE_LABELS, datasets: chartDefs
-                .filter(Boolean)
-                .map(item => getData({ ...item, generalData }, defs)) } : {}} />
+<div class="viewport">
+  <div class="content-container">
+    {#if defs}
+      <DataSelector {defs} bind:chartDefs {handlers} />
+      <div
+        class="chart-container"
+        bind:this={chartContainer}
+        style={`height: ${chartHeight}px;`}>
+        <Line
+          options={{ maintainAspectRatio: false, animation: { duration: 0, legend: { labels: { boxWidth: 10 } } } }}
+          data={Object.values(generalData).length ? { labels: TIMELINE_LABELS, datasets: chartDefs.map(
+                  item => getData({ ...item, generalData }, defs)
+                ) } : {}} />
 
-    </div>
-  {/if}
-  {#if loading}
-    <Loading />
-  {/if}
+      </div>
+    {/if}
+    {#if loading}
+      <Loading />
+    {/if}
+  </div>
 </div>
