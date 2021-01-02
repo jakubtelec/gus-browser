@@ -19,6 +19,11 @@
         value: "sum"
       }
     ],
+    genders = [
+      { label: "M+K", value: "general" },
+      { label: "M", value: "males" },
+      { label: "K", value: "females" }
+    ],
     years = defs.years,
     regions = defs.regions.map(({ name, code }) => ({
       label: name,
@@ -32,7 +37,8 @@
     ),
     selectedAgeGroupMethod = ageGroupMethods.find(
       def => def.value === chartDef.ageGroupMethod
-    );
+    ),
+    selectedGender = genders.find(def => def.value === chartDef.gender);
 
   let showPicker = false;
   let id = chartDef.id;
@@ -53,6 +59,12 @@
       handlers.modify(id, {
         ...chartDef,
         region: event.detail.value
+      });
+    },
+    selectGender = event => {
+      handlers.modify(id, {
+        ...chartDef,
+        gender: event.detail.value
       });
     },
     selectAgeGroup = event => {
@@ -174,6 +186,14 @@
         isClearable={false}
         selectedValue={chartDef.region}
         on:select={selectRegion} />
+    </div>
+    <div>Płeć:</div>
+    <div>
+      <Select
+        items={genders}
+        isClearable={false}
+        selectedValue={selectedGender}
+        on:select={selectGender} />
     </div>
     <div>Wiek:</div>
     <div>

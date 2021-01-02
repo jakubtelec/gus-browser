@@ -1,44 +1,38 @@
-import { getPeriodRange } from "./helpers";
+import merge from "lodash.merge";
+import { chartDefToPath } from "./helpers";
 
 const apiEndpoint = "API_ENDPOINT";
 
-export const loadMissingData = async ({
-  toUpdate = [],
-  chartDefs,
-  generalData,
-}) => {
-  const yearsInDefs = chartDefs.reduce(
-    (acc, { periodMethod, year, yearStart, yearEnd }) =>
-      periodMethod === "avg"
-        ? [...acc, ...getPeriodRange(yearStart, yearEnd)]
-        : [...acc, year],
+export const loadMissingData = async ({ toUpdate = [], chartDefs, dbData }) => {
+  const pathsInDefs = chartDefs.reduce(
+    (acc, next) => [...acc, ...chartDefToPath(next)],
     []
   );
 
-  const years = [
+  const paths = [
     ...new Set(
-      [...toUpdate, ...yearsInDefs].filter((year) => !generalData[year])
+      [...toUpdate, ...pathsInDefs]
+        .filter(([gender, year]) => !dbData[gender] || !dbData[gender][year])
+        .map(([gender, year]) => `${gender}.${year}`)
     ),
   ];
 
   // no updates needed
-  if (!years.length) return generalData;
+  if (!paths.length) return dbData;
   //
-  console.log(`Updating: ${years.length}`);
+  // console.log(`Updating: ${paths.length}`);
   //
   const response = await (
     await fetch(
       apiEndpoint +
         "data?" +
         new URLSearchParams({
-          paths: JSON.stringify(years.map((year) => `general.${year}`)),
+          paths: JSON.stringify(paths),
         })
     )
   ).json();
 
-  console.log(response);
-
-  return { ...generalData, ...response.general };
+  return merge(dbData, response);
 };
 
 export const loadSettings = async () =>

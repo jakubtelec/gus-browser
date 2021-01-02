@@ -10,7 +10,7 @@ const ageGroupByMethod = {
     ),
 };
 
-const gettersByMethod = (generalData, defs) => ({
+const gettersByMethod = (dbData, defs) => ({
   single: ({
     region,
     year,
@@ -19,11 +19,12 @@ const gettersByMethod = (generalData, defs) => ({
     ageGroupMethod,
     ageGroupStart,
     ageGroupEnd,
+    gender,
   }) => ({
     label: year,
     data: ageGroupByMethod[ageGroupMethod](
       {
-        data: generalData[year][region],
+        data: dbData[gender][year][region],
         ageGroup,
         ageGroupStart,
         ageGroupEnd,
@@ -42,9 +43,10 @@ const gettersByMethod = (generalData, defs) => ({
     ageGroupMethod,
     ageGroupStart,
     ageGroupEnd,
+    gender,
   }) => {
     const range = getPeriodRange(yearStart, yearEnd),
-      yearsData = Object.entries(generalData)
+      yearsData = Object.entries(dbData[gender])
         .filter(([yr]) => range.includes(yr))
         .map(([_, byRegion]) =>
           ageGroupByMethod[ageGroupMethod](
@@ -85,15 +87,16 @@ const getData = (
     yearStart,
     yearEnd,
     color,
-    generalData,
+    dbData,
     ageGroup,
     ageGroupMethod,
     ageGroupStart,
     ageGroupEnd,
+    gender,
   },
   defs
 ) => {
-  return gettersByMethod(generalData, defs)[periodMethod]({
+  return gettersByMethod(dbData, defs)[periodMethod]({
     region,
     year,
     yearStart,
@@ -103,6 +106,7 @@ const getData = (
     ageGroupMethod,
     ageGroupStart,
     ageGroupEnd,
+    gender,
   });
 };
 

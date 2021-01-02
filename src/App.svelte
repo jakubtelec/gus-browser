@@ -9,7 +9,8 @@
     refreshIds,
     getPeriodRange,
     getChartSize,
-    tagLast
+    tagLast,
+    chartDefToPath
   } from "./lib/helpers.js";
   import getData from "./lib/getter.js";
   import { loadMissingData, loadSettings } from "./lib/fetch.js";
@@ -23,7 +24,7 @@
     defs,
     chartHeight,
     loading,
-    generalData = {},
+    dbData = {},
     chartDefs = tagLast(refreshIds(DEFAULT_VIEWS));
 
   const updateChartSize = () => {
@@ -33,17 +34,13 @@
 
   const handlers = {
     modify: (id, data) => {
-      const toUpdate =
-        data.periodMethod === "avg"
-          ? [...getPeriodRange(data.yearStart, data.yearEnd)]
-          : [data.year];
       loading = true;
       loadMissingData({
-        toUpdate,
+        toUpdate: chartDefToPath(data),
         chartDefs,
-        generalData
+        dbData
       }).then(newData => {
-        generalData = newData;
+        dbData = newData;
         chartDefs = tagLast(
           chartDefs.map(item => (item.id === id ? data : item))
         );
@@ -77,11 +74,10 @@
     defs = (await loadSettings()).defs;
     await tick();
     updateChartSize();
-    generalData = await loadMissingData({ chartDefs, generalData });
+    dbData = await loadMissingData({ chartDefs, dbData });
     loading = false;
     await tick();
     updateChartSize();
-    console.log(defs);
   });
   window.addEventListener("resize", updateChartSize_deb);
 </script>
@@ -116,8 +112,8 @@
         style={`height: ${chartHeight}px;`}>
         <Line
           options={{ maintainAspectRatio: false, animation: { duration: 0, legend: { labels: { boxWidth: 10 } } } }}
-          data={Object.values(generalData).length ? { labels: TIMELINE_LABELS, datasets: chartDefs.map(
-                  item => getData({ ...item, generalData }, defs)
+          data={Object.values(dbData).length ? { labels: TIMELINE_LABELS, datasets: chartDefs.map(
+                  item => getData({ ...item, dbData }, defs)
                 ) } : {}} />
 
       </div>

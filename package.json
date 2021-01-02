@@ -24,6 +24,7 @@
   "dependencies": {
     "@ant-design/colors": "^5.0.1",
     "lodash.debounce": "^4.0.8",
+    "lodash.merge": "^4.6.2",
     "sirv-cli": "^1.0.0",
     "svelte-chartjs": "^1.0.1",
     "svelte-select": "^3.16.1"
