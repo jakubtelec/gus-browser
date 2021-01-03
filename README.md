@@ -6,7 +6,11 @@ Simple Poland's mortality rates data browser - numbers provided by GUS via [cust
 
 ## Stack
 
-- based on template for mighty [Svelte](https://svelte.dev) - it [here](https://github.com/sveltejs/template)
-- chart.js port for Svelte - [svelte-chartjs](https://saurav.tech/mdbsvelte/?path=/story/charts--installation)
-- Select for Svelte - [svelte-select](https://github.com/rob-balfre/svelte-select)
-- great drag and drop for Svelte - [svelte-dnd-action](https://github.com/isaacHagoel/svelte-dnd-action)
+- built with [Svelte](https://svelte.dev) framework (on top of this [template](https://github.com/sveltejs/template))
+- **chart.js** port for Svelte - [svelte-chartjs](https://saurav.tech/mdbsvelte/?path=/story/charts--installation)
+- **Select** for Svelte - [svelte-select](https://github.com/rob-balfre/svelte-select)
+- drag and drop for Svelte - [svelte-dnd-action](https://github.com/isaacHagoel/svelte-dnd-action)
+
+## Resources
+
+- [Feather icons](https://feathericons.com/)

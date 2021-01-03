@@ -1,11 +1,11 @@
 import { getPeriodRange, getAgeRange, sumArrs } from "./helpers.js";
 
 const ageGroupByMethod = {
-  single: ({ data, ageGroup }) => data[ageGroup].byWeek,
+  single: ({ data, ageGroup }) => data[ageGroup],
   sum: ({ data, ageGroupStart, ageGroupEnd }, { ageGroups }) =>
     sumArrs(
       getAgeRange(ageGroupStart, ageGroupEnd, ageGroups).map(
-        (ageGroup) => data[ageGroup].byWeek
+        (ageGroup) => data[ageGroup]
       )
     ),
 };
@@ -67,7 +67,7 @@ const gettersByMethod = (dbData, defs) => ({
       for (let y = 0; y < yearsData.length; y++) {
         sum += yearsData[y][x];
       }
-      data.push(sum / yearsData.length);
+      data.push(Number((sum / yearsData.length).toFixed(2)));
     }
     return {
       label: `${yearStart} - ${yearEnd}`,

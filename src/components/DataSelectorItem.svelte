@@ -8,7 +8,7 @@
   const periodMethods = [
       { label: "rok", value: "single" },
       {
-        label: "średnia z lat",
+        label: "zakres - średnia",
         value: "avg"
       }
     ],
@@ -25,11 +25,17 @@
       { label: "K", value: "females" }
     ],
     years = defs.years,
-    regions = defs.regions.map(({ name, code }) => ({
-      label: name,
-      value: name,
-      group: GROUPS[code.length]
-    })),
+    regions = Object.entries(defs.regions).reduce(
+      (acc, [name, code]) => [
+        ...acc,
+        {
+          label: name,
+          value: name,
+          group: GROUPS[code.length]
+        }
+      ],
+      []
+    ),
     ageGroups = defs.ageGroups;
 
   let selectedPeriodMethod = periodMethods.find(
@@ -113,7 +119,7 @@
   }
   .select-area {
     display: flex;
-    justify-content: flex-yearStart;
+    justify-content: flex-start;
     align-items: center;
     column-gap: 1rem;
   }

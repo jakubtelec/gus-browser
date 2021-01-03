@@ -20,8 +20,6 @@ export const loadMissingData = async ({ toUpdate = [], chartDefs, dbData }) => {
   // no updates needed
   if (!paths.length) return dbData;
   //
-  // console.log(`Updating: ${paths.length}`);
-  //
   const response = await (
     await fetch(
       apiEndpoint +

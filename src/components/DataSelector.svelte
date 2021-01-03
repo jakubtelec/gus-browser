@@ -8,12 +8,12 @@
 
   const flipDurationMs = 200;
 
-  const handleConsider = e => {
-    chartDefs = e.detail.items;
+  const handleConsider = event => {
+    chartDefs = event.detail.items;
   };
 
-  const handleFinalize = e => {
-    chartDefs = tagLast(e.detail.items);
+  const handleFinalize = event => {
+    chartDefs = tagLast(event.detail.items);
   };
 
   const transformDraggedElement = el => {

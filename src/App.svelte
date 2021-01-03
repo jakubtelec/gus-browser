@@ -62,9 +62,7 @@
       tick().then(updateChartSize);
     },
     clone: data => {
-      chartDefs = tagLast(
-        refreshIds([...chartDefs, { ...data, color: getColor() }])
-      );
+      chartDefs = tagLast(refreshIds([...chartDefs, { ...data }]));
       tick().then(updateChartSize);
     }
   };
@@ -93,12 +91,13 @@
   .content-container {
     position: relative;
     margin: 0;
-    padding: 8px 0;
+    padding-top: 0.5rem;
   }
   .chart-container {
     position: relative;
     width: 100%;
-    margin-top: 0.5rem;
+    padding: 0.5rem 0;
+    box-sizing: border-box;
   }
 </style>
 
