@@ -1,0 +1,161 @@
+{
+  "2020 - śmiertelność ogólna vs mężczyżni vs kobiety": [
+    {
+      "periodMethod": "single",
+      "ageGroupMethod": "single",
+      "region": "Polska",
+      "gender": "general",
+      "year": "2020",
+      "yearStart": "2015",
+      "yearEnd": "2020",
+      "color": "#1a1a1a",
+      "ageGroup": "Ogółem",
+      "ageGroupStart": "0 - 4",
+      "ageGroupEnd": "90 i więcej",
+      "id": 1,
+      "last": false
+    },
+    {
+      "periodMethod": "single",
+      "ageGroupMethod": "single",
+      "region": "Polska",
+      "gender": "females",
+      "year": "2020",
+      "yearStart": "2015",
+      "yearEnd": "2020",
+      "color": "#c41d7f",
+      "ageGroup": "Ogółem",
+      "ageGroupStart": "0 - 4",
+      "ageGroupEnd": "90 i więcej",
+      "id": 2,
+      "last": false
+    },
+    {
+      "periodMethod": "single",
+      "ageGroupMethod": "single",
+      "region": "Polska",
+      "gender": "males",
+      "year": "2020",
+      "yearStart": "2015",
+      "yearEnd": "2020",
+      "color": "#006d75",
+      "ageGroup": "Ogółem",
+      "ageGroupStart": "0 - 4",
+      "ageGroupEnd": "90 i więcej",
+      "id": 3,
+      "last": true
+    }
+  ],
+
+  "2020 vs suma z lat 2018-2019": [
+    {
+      "periodMethod": "single",
+      "ageGroupMethod": "single",
+      "region": "Polska",
+      "gender": "general",
+      "year": "2020",
+      "yearStart": "2015",
+      "yearEnd": "2020",
+      "color": "#cf1322",
+      "ageGroup": "Ogółem",
+      "ageGroupStart": "0 - 4",
+      "ageGroupEnd": "90 i więcej",
+      "id": 1,
+      "last": false
+    },
+    {
+      "periodMethod": "sum",
+      "ageGroupMethod": "single",
+      "region": "Polska",
+      "gender": "general",
+      "year": "2020",
+      "yearStart": "2018",
+      "yearEnd": "2019",
+      "color": "#096dd9",
+      "ageGroup": "Ogółem",
+      "ageGroupStart": "0 - 4",
+      "ageGroupEnd": "90 i więcej",
+      "id": 2,
+      "last": true
+    }
+  ],
+  "2020 vs średnie śmiertelności z dwóch poprzednich dekad": [
+    {
+      "periodMethod": "single",
+      "ageGroupMethod": "single",
+      "region": "Polska",
+      "gender": "general",
+      "year": "2020",
+      "yearStart": "2015",
+      "yearEnd": "2020",
+      "color": "#cf1322",
+      "ageGroup": "Ogółem",
+      "ageGroupStart": "0 - 4",
+      "ageGroupEnd": "90 i więcej",
+      "id": 1,
+      "last": false
+    },
+    {
+      "periodMethod": "avg",
+      "ageGroupMethod": "single",
+      "region": "Polska",
+      "gender": "general",
+      "year": "2020",
+      "yearStart": "2010",
+      "yearEnd": "2019",
+      "color": "#ff7a45",
+      "ageGroup": "Ogółem",
+      "ageGroupStart": "0 - 4",
+      "ageGroupEnd": "90 i więcej",
+      "id": 2,
+      "last": false
+    },
+    {
+      "periodMethod": "avg",
+      "ageGroupMethod": "single",
+      "region": "Polska",
+      "gender": "general",
+      "year": "2020",
+      "yearStart": "2000",
+      "yearEnd": "2009",
+      "color": "#ffa940",
+      "ageGroup": "Ogółem",
+      "ageGroupStart": "0 - 4",
+      "ageGroupEnd": "90 i więcej",
+      "id": 3,
+      "last": true
+    }
+  ],
+  "młodzi mężczyźni vs młode kobiety - średnia z 21 lat": [
+    {
+      "periodMethod": "avg",
+      "ageGroupMethod": "sum",
+      "region": "Polska",
+      "gender": "males",
+      "year": "2020",
+      "yearStart": "2000",
+      "yearEnd": "2020",
+      "color": "#c41d7f",
+      "ageGroup": "Ogółem",
+      "ageGroupStart": "0 - 4",
+      "ageGroupEnd": "20 - 24",
+      "id": 1,
+      "last": false
+    },
+    {
+      "periodMethod": "avg",
+      "ageGroupMethod": "sum",
+      "region": "Polska",
+      "gender": "females",
+      "year": "2020",
+      "yearStart": "2000",
+      "yearEnd": "2020",
+      "color": "#006d75",
+      "ageGroup": "Ogółem",
+      "ageGroupStart": "0 - 4",
+      "ageGroupEnd": "20 - 24",
+      "id": 2,
+      "last": true
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 <style>
   .loading-container {
-    position: absolute;
+    position: fixed;
     right: 1rem;
     bottom: 1rem;
     background: white;

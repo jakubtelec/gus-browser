@@ -27,7 +27,6 @@
 
 <style>
   .container {
-    font-size: 14px;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, 1fr);
@@ -46,12 +45,6 @@
     cursor: pointer;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
-  }
-
-  @media all and (max-width: 1200px) {
-    .container {
-      font-size: 12px;
-    }
   }
 </style>
 

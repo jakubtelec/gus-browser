@@ -5,8 +5,7 @@ import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import css from "rollup-plugin-css-only";
 import replace from "@rollup/plugin-replace";
-
-// import json from "@rollup/plugin-json";
+import json from "@rollup/plugin-json";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -28,7 +27,6 @@ function serve() {
           shell: true,
         }
       );
-
       process.on("SIGTERM", toExit);
       process.on("exit", toExit);
     },
@@ -44,6 +42,7 @@ export default {
     file: "public/build/bundle.js",
   },
   plugins: [
+    json(),
     replace({
       API_ENDPOINT: production
         ? "https://gus-mortality-api.herokuapp.com/"

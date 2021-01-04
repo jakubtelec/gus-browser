@@ -1,9 +1,6 @@
 <script>
   import { onMount, tick } from "svelte";
   import debounce from "lodash.debounce";
-  import Line from "svelte-chartjs/src/Line.svelte";
-  import DataSelector from "./components/DataSelector.svelte";
-  import Loading from "./components/Loading.svelte";
   import {
     getColor,
     refreshIds,
@@ -14,18 +11,21 @@
   } from "./lib/helpers.js";
   import getData from "./lib/getter.js";
   import { loadMissingData, loadSettings } from "./lib/fetch.js";
-  import {
-    DEFAULT_VIEWS,
-    TIMELINE_LABELS,
-    DEFAULT_ITEM
-  } from "./lib/constants.js";
+  import PRESETS from "./lib/presets.json";
+  import { TIMELINE_LABELS, DEFAULT_ITEM } from "./lib/constants.js";
+  import Line from "svelte-chartjs/src/Line.svelte";
+  import DataSelector from "./components/DataSelector.svelte";
+  import Loading from "./components/Loading.svelte";
+  import Header from "./components/Header.svelte";
+
+  let selectedPreset = Object.keys(PRESETS)[0];
 
   let chartContainer,
     defs,
     chartHeight,
     loading,
     dbData = {},
-    chartDefs = tagLast(refreshIds(DEFAULT_VIEWS));
+    chartDefs = tagLast(refreshIds(PRESETS[selectedPreset]));
 
   const updateChartSize = () => {
       chartHeight = getChartSize(chartContainer);
@@ -42,10 +42,11 @@
       }).then(newData => {
         dbData = newData;
         chartDefs = tagLast(
-          chartDefs.map(item => (item.id === id ? data : item))
+          chartDefs.map(item => (item.id === id ? { ...data } : item))
         );
         loading = false;
       });
+      // console.log(JSON.stringify(chartDefs));
     },
     remove: data => {
       chartDefs = tagLast(
@@ -67,21 +68,27 @@
     }
   };
 
+  const updateData = async () => {
+    if (!loading) loading = true;
+    dbData = await loadMissingData({ chartDefs, dbData });
+    await tick();
+    updateChartSize();
+    loading = false;
+  };
+
   onMount(async () => {
     loading = true;
     defs = (await loadSettings()).defs;
     await tick();
     updateChartSize();
-    dbData = await loadMissingData({ chartDefs, dbData });
-    loading = false;
-    await tick();
-    updateChartSize();
+    await updateData();
   });
   window.addEventListener("resize", updateChartSize_deb);
 </script>
 
 <style>
   .viewport {
+    font-size: 14px;
     display: flex;
     justify-content: center;
     position: relative;
@@ -99,10 +106,17 @@
     padding: 0.5rem 0;
     box-sizing: border-box;
   }
+
+  @media all and (max-width: 1000px) {
+    .viewport {
+      font-size: 12px;
+    }
+  }
 </style>
 
 <div class="viewport">
   <div class="content-container">
+    <Header bind:chartDefs bind:selectedPreset {updateData} presets={PRESETS} />
     {#if defs}
       <DataSelector {defs} bind:chartDefs {handlers} />
       <div

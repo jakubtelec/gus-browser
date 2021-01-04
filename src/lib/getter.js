@@ -1,5 +1,11 @@
 import { getPeriodRange, getAgeRange, sumArrs } from "./helpers.js";
 
+const genderLabels = {
+  general: "M+K",
+  males: "M",
+  females: "K",
+};
+
 const ageGroupByMethod = {
   single: ({ data, ageGroup }) => data[ageGroup],
   sum: ({ data, ageGroupStart, ageGroupEnd }, { ageGroups }) =>
@@ -21,7 +27,7 @@ const gettersByMethod = (dbData, defs) => ({
     ageGroupEnd,
     gender,
   }) => ({
-    label: year,
+    label: `${genderLabels[gender]} - ${year}`,
     data: ageGroupByMethod[ageGroupMethod](
       {
         data: dbData[gender][year][region],
@@ -70,10 +76,39 @@ const gettersByMethod = (dbData, defs) => ({
       data.push(Number((sum / yearsData.length).toFixed(2)));
     }
     return {
-      label: `${yearStart} - ${yearEnd}`,
+      label: `${genderLabels[gender]} - średnia z lat ${yearStart}-${yearEnd}`,
       data,
       borderColor: color,
       borderDash: [1, 0, 1],
+      backgroundColor: ["white"],
+    };
+  },
+  sum: ({
+    yearStart,
+    yearEnd,
+    region,
+    ageGroup,
+    color,
+    ageGroupMethod,
+    ageGroupStart,
+    ageGroupEnd,
+    gender,
+  }) => {
+    const range = getPeriodRange(yearStart, yearEnd),
+      yearsData = Object.entries(dbData[gender])
+        .filter(([yr]) => range.includes(yr))
+        .map(([_, byRegion]) =>
+          ageGroupByMethod[ageGroupMethod](
+            { data: byRegion[region], ageGroup, ageGroupStart, ageGroupEnd },
+            defs
+          )
+        );
+
+    return {
+      label: `${genderLabels[gender]} - suma z lat ${yearStart} - ${yearEnd}`,
+      data: sumArrs(yearsData),
+      borderColor: color,
+      borderDash: [1, 0, 0, 1],
       backgroundColor: ["white"],
     };
   },

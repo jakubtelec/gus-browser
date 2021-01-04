@@ -10,6 +10,10 @@
       {
         label: "zakres - średnia",
         value: "avg"
+      },
+      {
+        label: "zakres - suma",
+        value: "sum"
       }
     ],
     ageGroupMethods = [
@@ -38,13 +42,13 @@
     ),
     ageGroups = defs.ageGroups;
 
-  let selectedPeriodMethod = periodMethods.find(
-      def => def.value === chartDef.periodMethod
-    ),
-    selectedAgeGroupMethod = ageGroupMethods.find(
-      def => def.value === chartDef.ageGroupMethod
-    ),
-    selectedGender = genders.find(def => def.value === chartDef.gender);
+  $: selectedPeriodMethod = periodMethods.find(
+    def => def.value === chartDef.periodMethod
+  );
+  $: selectedAgeGroupMethod = ageGroupMethods.find(
+    def => def.value === chartDef.ageGroupMethod
+  );
+  $: selectedGender = genders.find(def => def.value === chartDef.gender);
 
   let showPicker = false;
   let id = chartDef.id;
@@ -97,8 +101,8 @@
     selectColor = color => {
       handlers.modify(id, { ...chartDef, color });
     },
-    switchPicker = e => {
-      e.stopPropagation();
+    switchPicker = event => {
+      event.stopPropagation();
       showPicker = !showPicker;
     };
 
@@ -253,7 +257,7 @@
           on:select={selectYear} />
       </div>
       <div />
-    {:else if chartDef.periodMethod === 'avg'}
+    {:else if chartDef.periodMethod === 'avg' || chartDef.periodMethod === 'sum'}
       <div class="double-select">
         <div class="left-select">
           <Select

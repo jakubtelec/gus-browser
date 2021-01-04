@@ -73,6 +73,6 @@ export const chartDefToPath = ({
   yearEnd,
   gender,
 }) =>
-  periodMethod === "avg"
+  periodMethod === "avg" || periodMethod === "sum"
     ? [...getPeriodRange(yearStart, yearEnd)].map((year) => [gender, year])
     : [[gender, year]];
