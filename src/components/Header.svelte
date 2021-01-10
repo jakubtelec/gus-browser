@@ -1,16 +1,18 @@
 <script>
-  export let chartDefs, presets, selectedPreset, updateData;
+  import { tick } from "svelte";
+  export let chartDefs, presets, selectedPreset, updateData, updateChartSize;
 
   import Select from "svelte-select";
   import { tagLast, refreshIds } from "../lib/helpers.js";
-  import { loadMissingData } from "../lib/fetch.js";
 
   const presetsList = Object.keys(presets);
 
   const selectPreset = async event => {
-    chartDefs = presets[event.detail.value];
-    console.log(chartDefs);
-    await updateData();
+    const newDefs = presets[event.detail.value];
+    await updateData(newDefs);
+    chartDefs = newDefs;
+    await tick();
+    updateChartSize();
   };
 </script>
 

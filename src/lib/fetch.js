@@ -1,25 +1,10 @@
 import merge from "lodash.merge";
-import { chartDefToPath } from "./helpers";
+import { chartDefsToPaths } from "./helpers";
 
 const apiEndpoint = "API_ENDPOINT";
 
-export const loadMissingData = async ({ toUpdate = [], chartDefs, dbData }) => {
-  const pathsInDefs = chartDefs.reduce(
-    (acc, next) => [...acc, ...chartDefToPath(next)],
-    []
-  );
-
-  const paths = [
-    ...new Set(
-      [...toUpdate, ...pathsInDefs]
-        .filter(([gender, year]) => !dbData[gender] || !dbData[gender][year])
-        .map(([gender, year]) => `${gender}.${year}`)
-    ),
-  ];
-
-  // no updates needed
-  if (!paths.length) return dbData;
-  //
+export const fetchData = async ({ chartDefs, dbData }) => {
+  const paths = chartDefsToPaths(chartDefs);
   const response = await (
     await fetch(
       apiEndpoint +
@@ -29,7 +14,6 @@ export const loadMissingData = async ({ toUpdate = [], chartDefs, dbData }) => {
         })
     )
   ).json();
-
   return merge(dbData, response);
 };
 

@@ -48,8 +48,10 @@ export const getPeriodRange = (start, end) => {
   );
 };
 
-export const getAgeRange = (start, end, table) =>
-  table.slice(0, table.indexOf(end) + 1).slice(table.indexOf(start));
+export const getAgeRange = (start, end, ageGroups) =>
+  ageGroups
+    .slice(0, ageGroups.indexOf(end) + 1)
+    .slice(ageGroups.indexOf(start));
 
 export const sumArrs = (arrs) => {
   const length = arrs.reduce(
@@ -66,13 +68,27 @@ export const sumArrs = (arrs) => {
   return sum;
 };
 
-export const chartDefToPath = ({
-  periodMethod,
-  year,
-  yearStart,
-  yearEnd,
-  gender,
-}) =>
-  periodMethod === "avg" || periodMethod === "sum"
-    ? [...getPeriodRange(yearStart, yearEnd)].map((year) => [gender, year])
-    : [[gender, year]];
+const pathGetters = [
+  ({ gender }) => gender,
+  ({ periodMethod, yearStart, yearEnd, year }) =>
+    periodMethod === "avg" || periodMethod === "sum"
+      ? [yearStart, yearEnd]
+      : year,
+  ({ region }) => region,
+  ({ ageGroupMethod, ageGroupStart, ageGroupEnd, ageGroup }) =>
+    ageGroupMethod === "avg" || ageGroupMethod === "sum"
+      ? [ageGroupStart, ageGroupEnd]
+      : ageGroup,
+];
+
+export const chartDefsToPaths = (chartDefs) =>
+  chartDefs.map((def) => pathGetters.map((getter) => getter(def)));
+
+export const getDateOfISOWeek = (w, y) => {
+  var simple = new Date(y, 0, 1 + (w - 1) * 7);
+  var dow = simple.getDay();
+  var ISOweekStart = simple;
+  if (dow <= 4) ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+  else ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+  return ISOweekStart;
+};

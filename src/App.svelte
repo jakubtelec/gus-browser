@@ -7,10 +7,10 @@
     getPeriodRange,
     getChartSize,
     tagLast,
-    chartDefToPath
+    getDateOfISOWeek
   } from "./lib/helpers.js";
   import getData from "./lib/getter.js";
-  import { loadMissingData, loadSettings } from "./lib/fetch.js";
+  import { fetchData, loadSettings } from "./lib/fetch.js";
   import PRESETS from "./lib/presets.json";
   import { TIMELINE_LABELS, DEFAULT_ITEM } from "./lib/constants.js";
   import Line from "svelte-chartjs/src/Line.svelte";
@@ -23,7 +23,7 @@
   let chartContainer,
     defs,
     chartHeight,
-    loading,
+    loading = true,
     dbData = {},
     chartDefs = tagLast(refreshIds(PRESETS[selectedPreset]));
 
@@ -34,10 +34,10 @@
 
   const handlers = {
     modify: (id, data) => {
+      console.log("===================");
       loading = true;
-      loadMissingData({
-        toUpdate: chartDefToPath(data),
-        chartDefs,
+      fetchData({
+        chartDefs: [data],
         dbData
       }).then(newData => {
         dbData = newData;
@@ -46,7 +46,6 @@
         );
         loading = false;
       });
-      // console.log(JSON.stringify(chartDefs));
     },
     remove: data => {
       chartDefs = tagLast(
@@ -68,22 +67,22 @@
     }
   };
 
-  const updateData = async () => {
-    if (!loading) loading = true;
-    dbData = await loadMissingData({ chartDefs, dbData });
-    await tick();
-    updateChartSize();
+  const updateData = async defs => {
+    loading = true;
+    dbData = await fetchData({ chartDefs: defs || chartDefs, dbData });
     loading = false;
   };
 
   onMount(async () => {
-    loading = true;
     defs = (await loadSettings()).defs;
     await tick();
     updateChartSize();
     await updateData();
   });
+
   window.addEventListener("resize", updateChartSize_deb);
+
+  $: displayData = !loading || Object.values(dbData).length;
 </script>
 
 <style>
@@ -116,7 +115,12 @@
 
 <div class="viewport">
   <div class="content-container">
-    <Header bind:chartDefs bind:selectedPreset {updateData} presets={PRESETS} />
+    <Header
+      bind:chartDefs
+      bind:selectedPreset
+      {updateData}
+      {updateChartSize}
+      presets={PRESETS} />
     {#if defs}
       <DataSelector {defs} bind:chartDefs {handlers} />
       <div
@@ -124,10 +128,13 @@
         bind:this={chartContainer}
         style={`height: ${chartHeight}px;`}>
         <Line
-          options={{ maintainAspectRatio: false, animation: { duration: 0, legend: { labels: { boxWidth: 10 } } } }}
-          data={Object.values(dbData).length ? { labels: TIMELINE_LABELS, datasets: chartDefs.map(
-                  item => getData({ ...item, dbData }, defs)
-                ) } : {}} />
+          options={{ maintainAspectRatio: false, animation: { duration: 0 } }}
+          data={displayData ? { labels: TIMELINE_LABELS, datasets: chartDefs.map(
+                  item => ({
+                    ...getData({ ...item, dbData }, defs),
+                    steppedLine: true
+                  })
+                ) } : { labels: TIMELINE_LABELS }} />
 
       </div>
     {/if}

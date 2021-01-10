@@ -8,18 +8,18 @@
   const periodMethods = [
       { label: "rok", value: "single" },
       {
-        label: "zakres - średnia",
+        label: "średnia od - do",
         value: "avg"
       },
       {
-        label: "zakres - suma",
+        label: "suma od - do",
         value: "sum"
       }
     ],
     ageGroupMethods = [
       { label: "grupa", value: "single" },
       {
-        label: "zakres",
+        label: "suma od - do",
         value: "sum"
       }
     ],
@@ -53,52 +53,36 @@
   let showPicker = false;
   let id = chartDef.id;
 
-  const selectPeriodMethod = event => {
+  const makeHandler = key => event => {
+    // in case of new props svelte-select handler on:select is triggered
+    // therefore to improve performance we should check if new value differs from old one
+    if (chartDef[key] !== event.detail.value)
       handlers.modify(id, {
         ...chartDef,
-        periodMethod: event.detail.value
+        [key]: event.detail.value
       });
-    },
-    selectAgeGroupMethod = event => {
-      handlers.modify(id, {
-        ...chartDef,
-        ageGroupMethod: event.detail.value
-      });
-    },
-    selectRegion = event => {
-      handlers.modify(id, {
-        ...chartDef,
-        region: event.detail.value
-      });
-    },
-    selectGender = event => {
-      handlers.modify(id, {
-        ...chartDef,
-        gender: event.detail.value
-      });
-    },
-    selectAgeGroup = event => {
-      handlers.modify(id, {
-        ...chartDef,
-        ageGroup: event.detail.value
-      });
-    },
-    selectAgeGroupStart = event => {
-      handlers.modify(id, { ...chartDef, ageGroupStart: event.detail.value });
-    },
-    selectAgeGroupEnd = event => {
-      handlers.modify(id, { ...chartDef, ageGroupEnd: event.detail.value });
-    },
-    selectYear = event => {
-      handlers.modify(id, { ...chartDef, year: event.detail.value });
-    },
-    selectYearStart = event => {
-      handlers.modify(id, { ...chartDef, yearStart: event.detail.value });
-    },
-    selectYearEnd = event => {
-      handlers.modify(id, { ...chartDef, yearEnd: event.detail.value });
-    },
-    selectColor = color => {
+  };
+
+  const selectHandlers = [
+    "periodMethod",
+    "ageGroupMethod",
+    "region",
+    "gender",
+    "ageGroup",
+    "ageGroupStart",
+    "ageGroupEnd",
+    "year",
+    "yearStart",
+    "yearEnd"
+  ].reduce(
+    (acc, handlerName) => ({
+      ...acc,
+      [handlerName]: makeHandler(handlerName)
+    }),
+    {}
+  );
+
+  const selectColor = color => {
       handlers.modify(id, { ...chartDef, color });
     },
     switchPicker = event => {
@@ -195,7 +179,7 @@
         {groupBy}
         isClearable={false}
         selectedValue={chartDef.region}
-        on:select={selectRegion} />
+        on:select={selectHandlers.region} />
     </div>
     <div>Płeć:</div>
     <div>
@@ -203,7 +187,7 @@
         items={genders}
         isClearable={false}
         selectedValue={selectedGender}
-        on:select={selectGender} />
+        on:select={selectHandlers.gender} />
     </div>
     <div>Wiek:</div>
     <div>
@@ -211,7 +195,7 @@
         items={ageGroupMethods}
         isClearable={false}
         selectedValue={selectedAgeGroupMethod}
-        on:select={selectAgeGroupMethod} />
+        on:select={selectHandlers.ageGroupMethod} />
     </div>
 
     {#if chartDef.ageGroupMethod === 'single'}
@@ -220,7 +204,7 @@
           items={ageGroups}
           isClearable={false}
           selectedValue={chartDef.ageGroup}
-          on:select={selectAgeGroup} />
+          on:select={selectHandlers.ageGroup} />
       </div>
     {:else if chartDef.ageGroupMethod === 'sum'}
       <div class="double-select">
@@ -229,14 +213,14 @@
             items={ageGroups.slice(1)}
             isClearable={false}
             selectedValue={chartDef.ageGroupStart}
-            on:select={selectAgeGroupStart} />
+            on:select={selectHandlers.ageGroupStart} />
         </div>
         <div class="right-select">
           <Select
             items={ageGroups.slice(1)}
             isClearable={false}
             selectedValue={chartDef.ageGroupEnd}
-            on:select={selectAgeGroupEnd} />
+            on:select={selectHandlers.ageGroupEnd} />
         </div>
       </div>
     {/if}
@@ -246,7 +230,7 @@
         items={periodMethods}
         isClearable={false}
         selectedValue={selectedPeriodMethod}
-        on:select={selectPeriodMethod} />
+        on:select={selectHandlers.periodMethod} />
     </div>
     {#if chartDef.periodMethod === 'single'}
       <div>
@@ -254,7 +238,7 @@
           items={years}
           isClearable={false}
           selectedValue={chartDef.year}
-          on:select={selectYear} />
+          on:select={selectHandlers.year} />
       </div>
       <div />
     {:else if chartDef.periodMethod === 'avg' || chartDef.periodMethod === 'sum'}
@@ -264,14 +248,14 @@
             items={years}
             isClearable={false}
             selectedValue={chartDef.yearStart}
-            on:select={selectYearStart} />
+            on:select={selectHandlers.yearStart} />
         </div>
         <div class="right-select">
           <Select
             items={years}
             isClearable={false}
             selectedValue={chartDef.yearEnd}
-            on:select={selectYearEnd} />
+            on:select={selectHandlers.yearEnd} />
         </div>
       </div>
     {/if}
