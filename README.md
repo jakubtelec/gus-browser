@@ -6,6 +6,10 @@ Poland's mortality rates data browser - numbers provided by GUS via [custom made
 
 Avaible period: 2000 - 2021, data aggregated weekly [(ISO 8601 week dates norm)](https://en.wikipedia.org/wiki/ISO_8601#Week_dates).
 
+## Latest build
+
+https://gus-browser.vercel.app/
+
 ## Stack
 
 - built with <3 [Svelte](https://svelte.dev) framework <3 (on top of this [template](https://github.com/sveltejs/template))
