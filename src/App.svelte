@@ -77,6 +77,7 @@
     await tick();
     updateChartSize();
     await updateData();
+    tick().then(updateChartSize);
   });
 
   window.addEventListener("resize", updateChartSize_deb);
@@ -119,8 +120,8 @@
       {updateData}
       {updateChartSize}
       presets={PRESETS} />
+    <DataSelector {defs} bind:chartDefs {handlers} />
     {#if defs}
-      <DataSelector {defs} bind:chartDefs {handlers} />
       <div
         class="chart-container"
         bind:this={chartContainer}

@@ -1,6 +1,7 @@
 <script>
   import { dndzone } from "svelte-dnd-action";
   import DataSelectorItem from "./DataSelectorItem.svelte";
+  import DataSelectorPlaceholder from "./DataSelectorPlaceholder.svelte";
   import { flip } from "svelte/animate";
   import { tagLast } from "../lib/helpers.js";
 
@@ -56,10 +57,16 @@
     on:finalize={handleFinalize}>
     {#each chartDefs as item (item.id)}
       <div class="item" animate:flip={{ duration: flipDurationMs }}>
-        <DataSelectorItem {defs} chartDef={item} {handlers} />
-        {#if item.last}
-          <div class="add-button">
-            <img src={'add.svg'} alt="add row icon" on:click={handlers.add} />
+        {#if defs}
+          <DataSelectorItem {defs} chartDef={item} {handlers} />
+          {#if item.last}
+            <div class="add-button">
+              <img src={'add.svg'} alt="add row icon" on:click={handlers.add} />
+            </div>
+          {/if}
+        {:else}
+          <div class="item">
+            <DataSelectorPlaceholder chartDef={item} />
           </div>
         {/if}
       </div>
