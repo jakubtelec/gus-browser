@@ -59,11 +59,10 @@
         <DataSelectorItem {defs} chartDef={item} {handlers} />
         {#if item.last}
           <div class="add-button">
-            <img src={'add.svg'} on:click={handlers.add} />
+            <img src={'add.svg'} alt="add row icon" on:click={handlers.add} />
           </div>
         {/if}
       </div>
     {/each}
   </section>
-
 </div>

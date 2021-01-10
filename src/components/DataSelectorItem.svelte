@@ -127,6 +127,11 @@
     --padding: 0.2rem;
     --height: 1.5rem;
     --width: 300px;
+    --indicatorHeight: 1rem;
+    --indicatorTop: 0.33rem;
+  }
+  .searchable-select {
+    min-width: 6rem;
   }
   .double-select {
     --border: none;
@@ -158,7 +163,7 @@
 <div class={'selectRow general-select'}>
   <div class="select-area">
     <div class={'icon-draggable'}>
-      <img width={'15px'} src={'draggable.svg'} />
+      <img width={'15px'} alt="drag row icon" src={'draggable.svg'} />
     </div>
     <div
       class={'style-icon'}
@@ -173,7 +178,7 @@
         </div>
       {/if}
     </div>
-    <div>
+    <div class="searchable-select">
       <Select
         items={regions}
         {groupBy}
@@ -185,6 +190,7 @@
     <div>
       <Select
         items={genders}
+        isSearchable={false}
         isClearable={false}
         selectedValue={selectedGender}
         on:select={selectHandlers.gender} />
@@ -193,6 +199,7 @@
     <div>
       <Select
         items={ageGroupMethods}
+        isSearchable={false}
         isClearable={false}
         selectedValue={selectedAgeGroupMethod}
         on:select={selectHandlers.ageGroupMethod} />
@@ -203,6 +210,7 @@
         <Select
           items={ageGroups}
           isClearable={false}
+          isSearchable={false}
           selectedValue={chartDef.ageGroup}
           on:select={selectHandlers.ageGroup} />
       </div>
@@ -212,6 +220,7 @@
           <Select
             items={ageGroups.slice(1)}
             isClearable={false}
+            isSearchable={false}
             selectedValue={chartDef.ageGroupStart}
             on:select={selectHandlers.ageGroupStart} />
         </div>
@@ -219,6 +228,7 @@
           <Select
             items={ageGroups.slice(1)}
             isClearable={false}
+            isSearchable={false}
             selectedValue={chartDef.ageGroupEnd}
             on:select={selectHandlers.ageGroupEnd} />
         </div>
@@ -229,6 +239,7 @@
       <Select
         items={periodMethods}
         isClearable={false}
+        isSearchable={false}
         selectedValue={selectedPeriodMethod}
         on:select={selectHandlers.periodMethod} />
     </div>
@@ -237,6 +248,7 @@
         <Select
           items={years}
           isClearable={false}
+          isSearchable={false}
           selectedValue={chartDef.year}
           on:select={selectHandlers.year} />
       </div>
@@ -247,6 +259,7 @@
           <Select
             items={years}
             isClearable={false}
+            isSearchable={false}
             selectedValue={chartDef.yearStart}
             on:select={selectHandlers.yearStart} />
         </div>
@@ -254,6 +267,7 @@
           <Select
             items={years}
             isClearable={false}
+            isSearchable={false}
             selectedValue={chartDef.yearEnd}
             on:select={selectHandlers.yearEnd} />
         </div>
@@ -261,8 +275,14 @@
     {/if}
   </div>
   <div class="actions-area">
-    <img src={'copy.svg'} on:click={() => handlers.clone(chartDef)} />
-    <img src={'remove.svg'} on:click={() => handlers.remove(chartDef)} />
+    <img
+      src={'copy.svg'}
+      alt="clone row icon"
+      on:click={() => handlers.clone(chartDef)} />
+    <img
+      src={'remove.svg'}
+      alt="remove row icon"
+      on:click={() => handlers.remove(chartDef)} />
   </div>
 
 </div>

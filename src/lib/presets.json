@@ -1,5 +1,5 @@
 {
-  "2020 - śmiertelność ogólna vs mężczyżni vs kobiety": [
+  "2020 - zgony ogólnie vs zgony wg płci": [
     {
       "periodMethod": "single",
       "ageGroupMethod": "single",
@@ -47,7 +47,7 @@
     }
   ],
 
-  "2020 vs suma z lat 2018-2019": [
+  "zgony w 2020 vs suma zgonów z lat 2018-2019": [
     {
       "periodMethod": "single",
       "ageGroupMethod": "single",
@@ -79,7 +79,7 @@
       "last": true
     }
   ],
-  "2020 vs średnie śmiertelności z dwóch poprzednich dekad": [
+  "zgony 2020 vs średnia z dwóch poprzednich dekad": [
     {
       "periodMethod": "single",
       "ageGroupMethod": "single",
@@ -126,7 +126,7 @@
       "last": true
     }
   ],
-  "młodzi mężczyźni vs młode kobiety - średnia z 21 lat": [
+  "młodzi mężczyźni vs młode kobiety - średnia zgonów z 21 lat": [
     {
       "periodMethod": "avg",
       "ageGroupMethod": "sum",

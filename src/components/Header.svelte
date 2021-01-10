@@ -23,16 +23,26 @@
     --height: 1.5rem;
     --width: 300px;
     display: flex;
-    padding: 0.25rem 0.75rem 0.5rem 0rem;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem 0rem 0.5rem 0rem;
     margin-bottom: 0.5rem;
     border-bottom: 1px solid lightgray;
+  }
+  .select-wrapper {
+    min-width: 33%;
   }
 </style>
 
 <div class="general-select">
-  <Select
-    items={presetsList}
-    isClearable={false}
-    selectedValue={selectedPreset}
-    on:select={selectPreset} />
+  <div class="select-wrapper">
+    <Select
+      items={presetsList}
+      isClearable={false}
+      selectedValue={selectedPreset}
+      on:select={selectPreset} />
+  </div>
+  <a href="https://github.com/jakubtelec/gus-browser" target="_blank">
+    <img src={'github.svg'} alt="github page link icon" />
+  </a>
 </div>

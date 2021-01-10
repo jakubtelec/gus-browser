@@ -34,7 +34,6 @@
 
   const handlers = {
     modify: (id, data) => {
-      console.log("===================");
       loading = true;
       fetchData({
         chartDefs: [data],
@@ -92,7 +91,6 @@
     justify-content: center;
     position: relative;
     width: 100vw;
-    /* height: 100vh; */
   }
   .content-container {
     position: relative;
@@ -135,7 +133,6 @@
                     steppedLine: true
                   })
                 ) } : { labels: TIMELINE_LABELS }} />
-
       </div>
     {/if}
     {#if loading}
