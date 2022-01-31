@@ -7,7 +7,6 @@
     getPeriodRange,
     getChartSize,
     tagLast,
-    getDateOfISOWeek
   } from "./lib/helpers.js";
   import getData from "./lib/getter.js";
   import { fetchData, loadSettings } from "./lib/fetch.js";
@@ -37,18 +36,18 @@
       loading = true;
       fetchData({
         chartDefs: [data],
-        dbData
-      }).then(newData => {
+        dbData,
+      }).then((newData) => {
         dbData = newData;
         chartDefs = tagLast(
-          chartDefs.map(item => (item.id === id ? { ...data } : item))
+          chartDefs.map((item) => (item.id === id ? { ...data } : item))
         );
         loading = false;
       });
     },
-    remove: data => {
+    remove: (data) => {
       chartDefs = tagLast(
-        refreshIds(chartDefs.filter(item => item.id !== data.id))
+        refreshIds(chartDefs.filter((item) => item.id !== data.id))
       );
       tick().then(() => {
         chartHeight = getChartSize(chartContainer);
@@ -60,13 +59,13 @@
       );
       tick().then(updateChartSize);
     },
-    clone: data => {
+    clone: (data) => {
       chartDefs = tagLast(refreshIds([...chartDefs, { ...data }]));
       tick().then(updateChartSize);
-    }
+    },
   };
 
-  const updateData = async defs => {
+  const updateData = async (defs) => {
     loading = true;
     dbData = await fetchData({ chartDefs: defs || chartDefs, dbData });
     loading = false;
@@ -84,6 +83,42 @@
 
   $: displayData = !loading || Object.values(dbData).length;
 </script>
+
+<div class="viewport">
+  <div class="content-container">
+    <Header
+      bind:chartDefs
+      bind:selectedPreset
+      {updateData}
+      {updateChartSize}
+      presets={PRESETS}
+    />
+    <DataSelector {defs} bind:chartDefs {handlers} />
+    {#if defs}
+      <div
+        class="chart-container"
+        bind:this={chartContainer}
+        style={`height: ${chartHeight}px;`}
+      >
+        <Line
+          options={{ maintainAspectRatio: false, animation: { duration: 0 } }}
+          data={displayData
+            ? {
+                labels: TIMELINE_LABELS,
+                datasets: chartDefs.map((item) => ({
+                  ...getData({ ...item, dbData }, defs),
+                  steppedLine: true,
+                })),
+              }
+            : { labels: TIMELINE_LABELS }}
+        />
+      </div>
+    {/if}
+    {#if loading}
+      <Loading />
+    {/if}
+  </div>
+</div>
 
 <style>
   .viewport {
@@ -111,33 +146,3 @@
     }
   }
 </style>
-
-<div class="viewport">
-  <div class="content-container">
-    <Header
-      bind:chartDefs
-      bind:selectedPreset
-      {updateData}
-      {updateChartSize}
-      presets={PRESETS} />
-    <DataSelector {defs} bind:chartDefs {handlers} />
-    {#if defs}
-      <div
-        class="chart-container"
-        bind:this={chartContainer}
-        style={`height: ${chartHeight}px;`}>
-        <Line
-          options={{ maintainAspectRatio: false, animation: { duration: 0 } }}
-          data={displayData ? { labels: TIMELINE_LABELS, datasets: chartDefs.map(
-                  item => ({
-                    ...getData({ ...item, dbData }, defs),
-                    steppedLine: true
-                  })
-                ) } : { labels: TIMELINE_LABELS }} />
-      </div>
-    {/if}
-    {#if loading}
-      <Loading />
-    {/if}
-  </div>
-</div>
