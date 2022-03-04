@@ -4,7 +4,6 @@
   import {
     getColor,
     refreshIds,
-    getPeriodRange,
     getChartSize,
     tagLast,
   } from "./lib/helpers.js";
