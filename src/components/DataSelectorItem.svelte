@@ -1,6 +1,5 @@
 <script>
   export let defs, chartDef, handlers;
-  import { rgb2hex } from "../lib/helpers.js";
   import Select from "svelte-select";
   import StylePicker from "./StylePicker.svelte";
   import { GROUPS } from "../lib/constants.js";
@@ -91,6 +90,7 @@
     };
 
   const groupBy = item => item.group;
+
 </script>
 
 <style>
@@ -124,14 +124,14 @@
   }
   .general-select {
     --borderRadius: 0.5rem;
-    --padding: 0.2rem;
+    --inputPadding: 0.2rem;
     --height: 1.5rem;
-    --width: 300px;
     --indicatorHeight: 1rem;
-    --indicatorTop: 0.33rem;
+    --indicatorTop: 0.2rem; 
+    --indicatorRight: 0.2rem; 
   }
   .searchable-select {
-    min-width: 6rem;
+    min-width: 6rem; 
   }
   .double-select {
     --border: none;
@@ -182,8 +182,9 @@
       <Select
         items={regions}
         {groupBy}
+        listAutoWidth={true}
         isClearable={false}
-        selectedValue={chartDef.region}
+        value={chartDef.region}
         on:select={selectHandlers.region} />
     </div>
     <div>Płeć:</div>
@@ -192,7 +193,7 @@
         items={genders}
         isSearchable={false}
         isClearable={false}
-        selectedValue={selectedGender}
+        value={selectedGender}
         on:select={selectHandlers.gender} />
     </div>
     <div>Wiek:</div>
@@ -201,7 +202,7 @@
         items={ageGroupMethods}
         isSearchable={false}
         isClearable={false}
-        selectedValue={selectedAgeGroupMethod}
+        value={selectedAgeGroupMethod}
         on:select={selectHandlers.ageGroupMethod} />
     </div>
 
@@ -211,7 +212,7 @@
           items={ageGroups}
           isClearable={false}
           isSearchable={false}
-          selectedValue={chartDef.ageGroup}
+          value={chartDef.ageGroup}
           on:select={selectHandlers.ageGroup} />
       </div>
     {:else if chartDef.ageGroupMethod === 'sum'}
@@ -221,7 +222,7 @@
             items={ageGroups.slice(1)}
             isClearable={false}
             isSearchable={false}
-            selectedValue={chartDef.ageGroupStart}
+            value={chartDef.ageGroupStart}
             on:select={selectHandlers.ageGroupStart} />
         </div>
         <div class="right-select">
@@ -229,7 +230,7 @@
             items={ageGroups.slice(1)}
             isClearable={false}
             isSearchable={false}
-            selectedValue={chartDef.ageGroupEnd}
+            value={chartDef.ageGroupEnd}
             on:select={selectHandlers.ageGroupEnd} />
         </div>
       </div>
@@ -240,7 +241,7 @@
         items={periodMethods}
         isClearable={false}
         isSearchable={false}
-        selectedValue={selectedPeriodMethod}
+        value={selectedPeriodMethod}
         on:select={selectHandlers.periodMethod} />
     </div>
     {#if chartDef.periodMethod === 'single'}
@@ -249,7 +250,7 @@
           items={years}
           isClearable={false}
           isSearchable={false}
-          selectedValue={chartDef.year}
+          value={chartDef.year}
           on:select={selectHandlers.year} />
       </div>
       <div />
@@ -260,7 +261,7 @@
             items={years}
             isClearable={false}
             isSearchable={false}
-            selectedValue={chartDef.yearStart}
+            value={chartDef.yearStart}
             on:select={selectHandlers.yearStart} />
         </div>
         <div class="right-select">
@@ -268,7 +269,7 @@
             items={years}
             isClearable={false}
             isSearchable={false}
-            selectedValue={chartDef.yearEnd}
+            value={chartDef.yearEnd}
             on:select={selectHandlers.yearEnd} />
         </div>
       </div>
